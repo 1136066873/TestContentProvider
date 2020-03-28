@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TestContentProvider.iml" filepath="$PROJECT_DIR$/TestContentProvider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alarmclockbaselib/alarmclockbaselib.iml" filepath="$PROJECT_DIR$/alarmclockbaselib/alarmclockbaselib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alarmclockproviderlib/alarmclockproviderlib.iml" filepath="$PROJECT_DIR$/alarmclockproviderlib/alarmclockproviderlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alarmclockresolverlib/alarmclockresolverlib.iml" filepath="$PROJECT_DIR$/alarmclockresolverlib/alarmclockresolverlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app2/app2.iml" filepath="$PROJECT_DIR$/app2/app2.iml" />
+    </modules>
+  </component>
+</project>

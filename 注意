@@ -1,0 +1,62 @@
+
+
+多个应用之间进行数据共享和数据修改的时候，有下面两个方案可以修改共享的数据：
+
+        //方案一
+        ContentValues values = new ContentValues();
+        values.put(AlarmClockDatabaseHelper.PACKAGE_NAME, "kkkddddd");
+        values.put(AlarmClockDatabaseHelper.REMARKS, "备注信息：没有备注信息");
+        Uri newAddUri = this.getContentResolver().insert(AlarmClockProvider.CONTENT_URI, values);
+
+
+        //方案二
+
+        //获取数据库表
+        AlarmClockDatabaseHelper alarmClockDatabaseHelper = new AlarmClockDatabaseHelper(this);
+        SQLiteDatabase writableDatabase = alarmClockDatabaseHelper.getWritableDatabase();
+        //初始化需要增加到表的数据
+        ContentValues tempValue = new ContentValues();
+        tempValue.put(AlarmClockDatabaseHelper.PACKAGE_NAME,this.getPackageName());
+        tempValue.put(AlarmClockDatabaseHelper.ALARM_ID,i);
+        tempValue.put(AlarmClockDatabaseHelper.DATE_TIME,i);
+        tempValue.put(AlarmClockDatabaseHelper.FREQUENCY,i+1000);
+        tempValue.put(AlarmClockDatabaseHelper.REMARKS,"备注信息：" + i);
+        //把数据添加到数据表
+        writableDatabase.insert(AlarmClockDatabaseHelper.DATABASE_TABLE_NAME,null,tempValue);
+        //释放资源
+        writableDatabase.close();
+
+########################################
+
+方案最终选定：选择 方案一 进行数据的共享以及数据的 增/删/改/查 。
+
+选方案一原因：因为通过自定义的 ContentResolver 的方式进行数据的增删改查，可以方便的通过回调实时监听获取
+              数据库数据的变化。
+
+
+另外需要注意：
+1.通过 ContentProvider 可以共享并提供数据，通过 ContentResolver 和对应的 Uri 可以修改共享的数据。
+2.（1）如果某应用只是通过 Provider 提供数据出来，则该应用只需要依赖 alarmclockproviderlib 即可；
+  （2）如果某应用只是需要修改 Provider 中的数据，则该应用只需要依赖 alarmclockresolverlib 即可（参考 app2 代码）；
+  （3）如果某应用既需要提供数据，还需要修改数据，则该应用需要同时依赖 alarmclockproviderlib 和 alarmclockresolverlib 库（参考 app 代码）；
+3.假设应用 A 通过 ContentProvider 共享数据，应用 B 通过 ContentResolver 修改数据，则参考本样例 app（对应 A） 与 app2 （对应 B）即可。
+4.在上述第 3 中所描述的情境中，应用 A 与 应用 B 只需要对应的 Uri 是一致的即可，两个应用的签名无需要一致。
+5.不存在两个应用同时依赖 alarmclockproviderlib 库。
+  原因是：自定义 ContentProvider 的时候，只需两步即可：
+          第一步：声明自定义的 AlarmClockProvider 继承 ContentProvider；
+          第二步：需要在 AndroidManifest.xml 中声明这个自定义的 AlarmClockProvider.
+
+          做了上面两步，不需要自己去初始化自定义的 AlarmClockProvider，因为当 app 加载 AndroidManifest.xml
+          的时候，安卓系统底层会扫描 AndroidManifest.xml 中的 provider 节点，并对自定义的 AlarmClockProvider
+          进行初始化，这个服务在系统中就算注册成功了。
+
+          而如果两个应用同时依赖 alarmclockproviderlib 库的时候，相当于两个应用分别最终合并后的 AndroidManifest.xml
+          中都包含相同的 provider 节点（通过 android:authorities="xxxx" 进行区分），但是安卓底层不会对这个自定义
+          的 AlarmClockProvider 初始化两次，所以最终会导致第二个安装的应用会安装不上，IDEA 会提示以下信息：
+
+Installation failed with message INSTALL_FAILED_CONFLICTING_PROVIDER: Package couldn't be installed in /data/app/com.heguodong.beijing.app2-s1db_QbwVkqq1AGddhm2WA==: Can't install because provider name test (in package com.heguodong.beijing.app2) is already used by com.heguodong.beijing.testcontentprovider.
+It is possible that this issue is resolved by uninstalling an existing version of the apk if it is present, and then re-installing.
+
+WARNING: Uninstalling will remove the application data!
+
+Do you want to uninstall the existing application?

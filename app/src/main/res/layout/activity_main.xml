@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.heguodong.beijing.testcontentprovider.MainActivity">
+
+        <TextView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:text="增加数据" />
+
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:layout_below="@+id/add"
+            android:text="删除数据" />
+
+        <TextView
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="210dp"
+            android:layout_below="@+id/delete"
+            android:text="修改数据" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="280dp"
+            android:layout_below="@+id/update"
+            android:text="此应用可以：\n 1.通过自定义 ContentProvider 向其他所有应用（包括本应用）提供共享数据。\n 2.点击上面文字可以通过 ContentResolver 修改数据。\n 3.具体信息请检查日志。\n 4.具体实现方式请参考代码以及工程根目录下文件 注意.txt 。"
+            android:textColor="@color/colorPrimary"/>
+
+    </RelativeLayout>
+
